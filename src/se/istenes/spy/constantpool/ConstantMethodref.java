@@ -12,8 +12,8 @@ public class ConstantMethodref extends Constant {
     
     private int class_index, name_and_type_index;
     
-    public ConstantMethodref(int index, int tag, int class_index, int name_and_type_index) {
-        super(index, tag);
+    public ConstantMethodref(int index, int tag, int class_index, int name_and_type_index, int byte_position) {
+        super(index, tag, byte_position);
         
         this.tag = tag;
         this.class_index = class_index;

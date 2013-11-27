@@ -12,8 +12,8 @@ public class ConstantFloat extends Constant {
     
     private float value;
     
-    public ConstantFloat(int index, int tag, int value) {
-        super(index, tag);
+    public ConstantFloat(int index, int tag, int value, int byte_position) {
+        super(index, tag, byte_position);
         this.value = Float.intBitsToFloat(value);
         
         attributes = new ArrayList<Attribute>(1);

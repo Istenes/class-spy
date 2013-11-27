@@ -13,8 +13,8 @@ public class ConstantLong extends Constant {
     private int high_bytes, low_bytes;
     private long value;
     
-    public ConstantLong(int index, int tag, int high_bytes, int low_bytes) {
-        super(index, tag);
+    public ConstantLong(int index, int tag, int high_bytes, int low_bytes, int byte_position) {
+        super(index, tag, byte_position);
         this.high_bytes = high_bytes;
         this.low_bytes = low_bytes;
         this.value = ((long) high_bytes << 32)|low_bytes;  

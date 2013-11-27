@@ -12,8 +12,8 @@ public class ConstantString extends Constant {
 
     private int string_index;
     
-    public ConstantString(int index, int tag, int string_index) {
-        super(index, tag);
+    public ConstantString(int index, int tag, int string_index, int byte_position) {
+        super(index, tag, byte_position);
         this.string_index = string_index;        
         attributes = new ArrayList<Attribute>(1);
         

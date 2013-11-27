@@ -16,8 +16,8 @@ public class ConstantNameAndType extends Constant {
     
     private int name_index, descriptor_index;
     
-    public ConstantNameAndType(int index, int tag, int name_index, int descriptor_index) {
-        super(index, tag);
+    public ConstantNameAndType(int index, int tag, int name_index, int descriptor_index, int byte_position) {
+        super(index, tag, byte_position);
         this.name_index = name_index;
         this.descriptor_index = descriptor_index;
         

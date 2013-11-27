@@ -16,8 +16,8 @@ public class ConstantClass extends Constant {
     
     private int name_index;
 
-    public ConstantClass(int index, int tag, int name_index){
-        super(index, tag);
+    public ConstantClass(int index, int tag, int name_index, int byte_position){
+        super(index, tag, byte_position);
         this.name_index = name_index;
         
         attributes = new ArrayList<Attribute>(1);

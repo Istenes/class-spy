@@ -2,6 +2,7 @@ package se.istenes.spy.constantpool;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import se.istenes.spy.util.Utility;
 
@@ -15,8 +16,8 @@ public class ConstantUtf8 extends Constant {
     private byte[] bytes;
     private String text;
     
-    public ConstantUtf8(int index, int tag, int length, byte[] bytes) {
-        super(index, tag);
+    public ConstantUtf8(int index, int tag, int length, byte[] bytes, int byte_position) {
+        super(index, tag, byte_position);
         
         this.length = length;
         this.bytes = bytes;
@@ -56,10 +57,13 @@ public class ConstantUtf8 extends Constant {
         s += "\n\tindex: "+index+";";
         s += "\n\ttag: "+tag+";";
         s += "\n\tlength: "+length+";";
-        s += "\n\tbytes: "+bytes.toString()+";";
         s += "\n\ttext: "+text+";";
         s += "\n}\n";
         return s;
+    }
+    
+    public String getBytesAsString() {
+    	return Arrays.toString(bytes);
     }
     
 }

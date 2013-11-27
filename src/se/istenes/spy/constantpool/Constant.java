@@ -16,12 +16,14 @@ public class Constant {
     
     public int tag;
     public int index;
+    protected int byte_position = 0;
     
     public ArrayList<Attribute> attributes;
     
-    public Constant(int index, int tag){
+    public Constant(int index, int tag, int position){
         this.index = index;
         this.tag = tag;
+        this.byte_position = position;
     }
     
     @Override

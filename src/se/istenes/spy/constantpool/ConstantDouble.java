@@ -17,8 +17,8 @@ public class ConstantDouble extends Constant {
     private int high_bytes, low_bytes;
     private double value;
     
-    public ConstantDouble(int index, int tag, int high_bytes, int low_bytes) {
-        super(index, tag);
+    public ConstantDouble(int index, int tag, int high_bytes, int low_bytes, int byte_position) {
+        super(index, tag, byte_position);
         
         this.high_bytes = high_bytes;
         this.low_bytes = low_bytes;

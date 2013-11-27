@@ -2,13 +2,24 @@ package se.istenes.spy;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import se.istenes.attribute.ConstantValue;
+import se.istenes.spy.constantpool.Constant;
+import se.istenes.spy.constantpool.ConstantPool;
+import se.istenes.spy.constantpool.ConstantUtf8;
+import se.istenes.spy.util.ClassFile;
+import se.istenes.spy.util.Field;
+import se.istenes.spy.util.Fields;
 
 public class MainWindow {
 
@@ -36,6 +47,8 @@ public class MainWindow {
 	private static int currentByte = 0;
 	private static int lastByte;
 	private JTextPane textPane;
+	
+	private Spy spy;
 
 	/**
 	 * Launch the application.
@@ -57,8 +70,12 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
+//		JFileChooser jfc = new JFileChooser();
+//		jfc.showOpenDialog(null);
+//		spy = new Spy(jfc.getSelectedFile());
+		spy = new Spy("/home/istenes/workspace/ByteCodeExample/bin/se/istenes/bytecode/Main.class");
+
 		initialize();
-		Spy spy = new Spy("C:\\Users\\niklas.istenes\\grund-workspace\\AnimalJungle\\bin\\se\\istenes\\jungle\\Jungle.class");
 	}
 
 	/**
@@ -78,8 +95,60 @@ public class MainWindow {
 		JMenuItem mntmOpenFile = new JMenuItem("Open file");
 		mnFile.add(mntmOpenFile);
 
-		JTree tree = new JTree(new Object[0]);
-		frame.getContentPane().add(tree, BorderLayout.CENTER);
+		ClassFile classFile = spy.getClassAt(0);
+		
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode(classFile.getThisClassName());
+		
+		DefaultMutableTreeNode metaData = new DefaultMutableTreeNode("Meta Data");
+		DefaultMutableTreeNode cafeBabe = new DefaultMutableTreeNode("CAFEBABE: " + classFile.getCafebabe());
+		DefaultMutableTreeNode version = new DefaultMutableTreeNode("Version: " + classFile.getVersion());
+		DefaultMutableTreeNode superClass = new DefaultMutableTreeNode("SuperClass: " + classFile.getSuperClassName());
+		DefaultMutableTreeNode accessFlags = new DefaultMutableTreeNode("AccesFlags: " + Arrays.toString(classFile.getClassAccesFlags()));
+
+		metaData.add(cafeBabe);
+		metaData.add(version);
+		metaData.add(superClass);
+		metaData.add(accessFlags);
+		top.add(metaData);
+		
+		DefaultMutableTreeNode constantPoolNode = new DefaultMutableTreeNode("Constant Pool ("+classFile.getConstantPool().getConstantPoolCount()+")");
+		ConstantPool constantPool = classFile.getConstantPool();
+		for(int c = 1; c <= constantPool.getConstantPoolCount(); c++) {
+			Constant constant = constantPool.getConstant(c);
+			DefaultMutableTreeNode constantNode = new DefaultMutableTreeNode(constant.toString());
+			if(constant instanceof ConstantUtf8) {
+				ConstantUtf8 constantutf8 = (ConstantUtf8) constant;
+				DefaultMutableTreeNode details = new DefaultMutableTreeNode(constantutf8.getBytesAsString());
+				constantNode.add(details);
+			}
+			constantPoolNode.add(constantNode);
+		}
+		
+		top.add(constantPoolNode);
+		
+		DefaultMutableTreeNode fieldsNode = new DefaultMutableTreeNode("Fields (" + classFile.getFields().getFieldCount() + ")");
+		Fields fields = classFile.getFields();
+		for(int f = 1; f <= fields.getFieldCount(); f++) {
+			Field field = fields.getFiled(f);
+			DefaultMutableTreeNode fieldNode = new DefaultMutableTreeNode(field);
+			
+			//Read attributes
+			for(int c = 1; c<= field.getAttributes_count(); c++) {
+				ConstantValue cv = field.getAttribute(c);
+				DefaultMutableTreeNode constantValueNode = new DefaultMutableTreeNode(cv);
+				fieldNode.add(constantValueNode);
+			}
+			
+			fieldsNode.add(fieldNode);
+		}
+		
+		
+		top.add(fieldsNode);
+		
+		JTree tree = new JTree(top);
+		
+		JScrollPane scrollPane = new JScrollPane(tree);
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		textPane = new JTextPane();
 		frame.getContentPane().add(textPane, BorderLayout.SOUTH);

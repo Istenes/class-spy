@@ -12,8 +12,8 @@ public class ConstantInterfaceMethodref extends Constant {
     
     private int class_index, name_and_type_index;
     
-    public ConstantInterfaceMethodref(int index, int tag, int class_index, int name_and_type_index) {
-        super(index, tag);
+    public ConstantInterfaceMethodref(int index, int tag, int class_index, int name_and_type_index, int byte_position) {
+        super(index, tag, byte_position);
         this.class_index = class_index;
         this.name_and_type_index = name_and_type_index;        
         

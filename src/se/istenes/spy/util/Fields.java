@@ -18,11 +18,11 @@ public class Fields {
     }
     
     public Field getFiled(int index) {
-        return fields[index];
+        return fields[index-1];
     }
     
     public void addField(Field field) {
-        fields[field.getIndex()] = field;
+        fields[field.getIndex()-1] = field;
     }
     
 }
